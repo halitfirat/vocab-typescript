@@ -13,8 +13,6 @@ app.use(express.json());
 
 require("./routes/vocabRoutes")(app);
 
-console.log("--- hello");
-
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 

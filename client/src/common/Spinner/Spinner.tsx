@@ -2,8 +2,16 @@ import React from "react";
 
 import styles from "./Spinner.module.scss";
 
-const Spinner: React.FC = () => {
-  return <i className={styles.inlineSpinner}></i>;
+interface props {
+  inline?: boolean;
+}
+
+const Spinner: React.FC<props> = ({ inline }) => {
+  return inline ? (
+    <i className={styles.inlineSpinner}></i>
+  ) : (
+    <div className={styles.spinner}></div>
+  );
 };
 
 export default Spinner;

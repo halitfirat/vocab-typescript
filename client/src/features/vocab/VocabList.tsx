@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useEffect } from "react";
 
-import IVocab from "./IVocab";
+import { getVocabs } from "./vocabSlice";
+import { useAppDispatch, useAppSelector, Spinner } from "../../common";
 
 const VocabList: React.FC = () => {
-  const [vocabs, setVocabs] = useState<IVocab[]>([]);
+  const dispatch = useAppDispatch();
+  const gettingVocabSelector = useAppSelector(
+    (state) => state.vocab.gettingVocabs
+  );
+  const vocabs = useAppSelector((state) => state.vocab.vocabs);
 
   useEffect(() => {
     fetchVocabs();
@@ -12,15 +16,19 @@ const VocabList: React.FC = () => {
   }, []);
 
   const fetchVocabs = async () => {
-    const result: { data: IVocab[] } = await axios.get("/api/vocabs");
-
-    setVocabs(result.data);
+    dispatch(getVocabs());
   };
 
-  return (
+  return gettingVocabSelector === "pending" ? (
+    <Spinner />
+  ) : (
     <ul>
       {vocabs.map((vocab) => {
-        return <li>{vocab.foreign}</li>;
+        return (
+          <li>
+            {vocab.native} - {vocab.foreign}
+          </li>
+        );
       })}
     </ul>
   );
