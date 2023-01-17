@@ -1,10 +1,7 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const react_1 = __importDefault(require("react"));
+const jsx_runtime_1 = require("react/jsx-runtime");
 const Header = () => {
-    return <h2>Header </h2>;
+    return (0, jsx_runtime_1.jsx)("h2", { children: "Header " });
 };
 exports.default = Header;

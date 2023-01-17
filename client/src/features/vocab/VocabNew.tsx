@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
@@ -8,14 +8,14 @@ import { addVocab } from "./vocabSlice";
 
 const VocabNew: React.FC = () => {
   const navigate = useNavigate();
-  const [submitted, setSubmitted] = useState(false);
   const dispatch = useAppDispatch();
-  const vocabAddedSelector = useAppSelector((state) => state.vocab.vocabAdded);
+  const addingVocabSelector = useAppSelector(
+    (state) => state.vocab.addingVocab
+  );
   const { register, handleSubmit } = useForm<IVocab>();
 
   const onHandleSubmit = handleSubmit((data) => {
     dispatch(addVocab({ vocabData: data, navigate }));
-    setSubmitted(true);
   });
 
   return (
@@ -30,7 +30,7 @@ const VocabNew: React.FC = () => {
           <input {...register("foreign")} />
         </div>
         <button type="submit">
-          Submit {submitted && vocabAddedSelector ? <Spinner /> : null}
+          Submit {addingVocabSelector === "pending" ? <Spinner inline /> : null}
         </button>
       </form>
     </h2>

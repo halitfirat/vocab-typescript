@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const react_1 = __importDefault(require("react"));
+const jsx_runtime_1 = require("react/jsx-runtime");
 const react_router_dom_1 = require("react-router-dom");
 const react_toastify_1 = require("react-toastify");
 require("react-toastify/dist/ReactToastify.css");
@@ -16,24 +16,20 @@ function App() {
     const routes = (0, react_router_dom_1.useRoutes)([
         {
             path: "/",
-            element: <Homepage_1.default />,
+            element: (0, jsx_runtime_1.jsx)(Homepage_1.default, {}),
         },
         {
             path: "/vocabs",
             children: [
                 {
                     index: true,
-                    element: <VocabList_1.default />,
+                    element: (0, jsx_runtime_1.jsx)(VocabList_1.default, {}),
                 },
-                { path: ":id", element: <VocabOne_1.default /> },
-                { path: "new", element: <VocabNew_1.default /> },
+                { path: ":id", element: (0, jsx_runtime_1.jsx)(VocabOne_1.default, {}) },
+                { path: "new", element: (0, jsx_runtime_1.jsx)(VocabNew_1.default, {}) },
             ],
         },
     ]);
-    return (<>
-      <Header_1.default />
-      {routes}
-      <react_toastify_1.ToastContainer autoClose={1200}/>
-    </>);
+    return ((0, jsx_runtime_1.jsxs)(jsx_runtime_1.Fragment, { children: [(0, jsx_runtime_1.jsx)(Header_1.default, {}), routes, (0, jsx_runtime_1.jsx)(react_toastify_1.ToastContainer, { autoClose: 1200 })] }));
 }
 exports.default = App;
