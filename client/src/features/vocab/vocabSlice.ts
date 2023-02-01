@@ -20,16 +20,25 @@ export const getVocabs = createAsyncThunk("vocab/getVocabsStatus", async () => {
   return result;
 });
 
+export const getVocab = createAsyncThunk(
+  "vocab/getVocabStatus",
+  async (id: string) => {
+    const result = await axios.get(`/api/vocabs/${id}`);
+
+    return result;
+  }
+);
+
 interface VocabState {
-  vocabs: IVocab[];
-  addingVocab: "idle" | "pending" | "success" | "failure";
-  gettingVocabs: "idle" | "pending" | "success" | "failure";
+  list: IVocab[];
+  single: IVocab | null;
+  loading: "idle" | "pending" | "success" | "failure";
 }
 
 const initialState: VocabState = {
-  vocabs: [],
-  addingVocab: "idle",
-  gettingVocabs: "idle",
+  list: [],
+  single: null,
+  loading: "idle",
 };
 
 export const vocabSlice = createSlice({
@@ -38,29 +47,42 @@ export const vocabSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(addVocab.pending, (state, action) => {
-      state.addingVocab = "pending";
+      state.loading = "pending";
     });
     builder.addCase(addVocab.fulfilled, (state, action) => {
       const navigate = action.meta.arg.navigate;
 
-      state.addingVocab = "success";
+      state.loading = "success";
       toast.success("Added new Vocab!");
       navigate("/");
     });
     builder.addCase(addVocab.rejected, (state, action) => {
-      state.addingVocab = "failure";
+      state.loading = "failure";
       console.error(action.error);
       toast.error("Failed to add new Vocab!");
     });
+
     builder.addCase(getVocabs.pending, (state, action) => {
-      state.gettingVocabs = "pending";
+      state.loading = "pending";
     });
     builder.addCase(getVocabs.fulfilled, (state, action) => {
-      state.gettingVocabs = "success";
-      state.vocabs = action.payload.data;
+      state.loading = "success";
+      state.list = action.payload.data;
     });
     builder.addCase(getVocabs.rejected, (state, action) => {
-      state.gettingVocabs = "failure";
+      state.loading = "failure";
+      console.error(action.error);
+    });
+
+    builder.addCase(getVocab.pending, (state, action) => {
+      state.loading = "pending";
+    });
+    builder.addCase(getVocab.fulfilled, (state, action) => {
+      state.loading = "success";
+      state.single = action.payload.data;
+    });
+    builder.addCase(getVocab.rejected, (state, action) => {
+      state.loading = "failure";
       console.error(action.error);
     });
   },

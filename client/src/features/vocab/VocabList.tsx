@@ -1,14 +1,13 @@
 import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 import { getVocabs } from "./vocabSlice";
 import { useAppDispatch, useAppSelector, Spinner } from "../../common";
 
 const VocabList: React.FC = () => {
   const dispatch = useAppDispatch();
-  const gettingVocabSelector = useAppSelector(
-    (state) => state.vocab.gettingVocabs
-  );
-  const vocabs = useAppSelector((state) => state.vocab.vocabs);
+  const loadingSelector = useAppSelector((state) => state.vocab.loading);
+  const vocabs = useAppSelector((state) => state.vocab.list);
 
   useEffect(() => {
     fetchVocabs();
@@ -19,14 +18,16 @@ const VocabList: React.FC = () => {
     dispatch(getVocabs());
   };
 
-  return gettingVocabSelector === "pending" ? (
+  return loadingSelector === "pending" ? (
     <Spinner />
   ) : (
     <ul>
       {vocabs.map((vocab) => {
         return (
           <li>
-            {vocab.native} - {vocab.foreign}
+            <Link to={`/vocabs/${vocab._id}`}>
+              {vocab.native} - {vocab.foreign}
+            </Link>
           </li>
         );
       })}
