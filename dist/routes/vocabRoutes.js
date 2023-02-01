@@ -24,6 +24,15 @@ module.exports = (app) => {
             console.log(error);
         }
     }));
+    app.get("/api/vocabs/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const result = yield Vocab.findById(req.params.id).exec();
+            res.send(result);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }));
     app.post("/api/vocabs", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const result = yield new Vocab(req.body).save();

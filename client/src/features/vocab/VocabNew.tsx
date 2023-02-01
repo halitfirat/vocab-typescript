@@ -9,9 +9,7 @@ import { addVocab } from "./vocabSlice";
 const VocabNew: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const addingVocabSelector = useAppSelector(
-    (state) => state.vocab.addingVocab
-  );
+  const loadingSelector = useAppSelector((state) => state.vocab.loading);
   const { register, handleSubmit } = useForm<IVocab>();
 
   const onHandleSubmit = handleSubmit((data) => {
@@ -30,7 +28,7 @@ const VocabNew: React.FC = () => {
           <input {...register("foreign")} />
         </div>
         <button type="submit">
-          Submit {addingVocabSelector === "pending" ? <Spinner inline /> : null}
+          Submit {loadingSelector === "pending" ? <Spinner inline /> : null}
         </button>
       </form>
     </h2>
